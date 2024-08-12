@@ -353,19 +353,20 @@ local stackID_old
 local function Stack_Loop()
 	if #stack_queue > 0 and processing then
 		local r, e = pcall( Queue_Process )
-		
+
 		if !r then
 			ErrorNoHalt( e, "\n" )
 		else
-			// Create undo if stack_IDs are different
-			if !stackID_old then
-				stackID_old = e.stackID
-			elseif stackID_old ~= e.stackID then
-				Stack_Undo( undo_table )
-				stackID_old = e.stackID
+			if e ~= false then
+				if !stackID_old then
+					stackID_old = e.stackID
+				elseif stackID_old ~= e.stackID then
+					Stack_Undo( undo_table )
+					stackID_old = e.stackID
+				end
+				table.insert( undo_table, e )
+				return true
 			end
-			table.insert( undo_table, e )
-			return true
 		end
 	end
 	
