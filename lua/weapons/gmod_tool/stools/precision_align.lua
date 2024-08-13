@@ -253,6 +253,9 @@ function TOOL:GetClickPosition( trace )
 	local pos
 	local Ent = trace.Entity
 	local Phys = Ent:GetPhysicsObjectNum( trace.PhysicsBone )
+	if not IsValid(Phys) then
+		return trace.HitPos
+	end
 	local Edge_Snap = self:GetClientNumber( "edge_snap" ) ~= 0
 	local Centre_Snap = self:GetClientNumber( "centre_snap" ) ~= 0
 	local Snap_Dist = math.max(0, self:GetClientNumber( "snap_distance" ))
